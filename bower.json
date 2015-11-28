@@ -1,0 +1,24 @@
+{
+  "name": "code",
+  "version": "0.0.0",
+  "authors": [
+    "Jhirley <jhirley.fonte@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.5",
+    "angular-resource": "~1.4.5",
+    "angular-route": "~1.4.5",
+    "jquery": "~2.1.4",
+    "toastr": "~2.1.2"
+  }
+}

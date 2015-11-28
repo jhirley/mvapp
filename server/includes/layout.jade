@@ -1,0 +1,35 @@
+//-layout.jade
+doctype html
+html(lang="en")
+	head
+		block title
+			title=menu.appTitle
+		block baseurl
+			//-base(href="/")
+		block title
+			title Client Cooperation
+		block metatags
+		mata( charset='utf-8')
+		meta( http-equiv='X-UA-Compatible', content='IE=edge')
+		meta( name='viewport', content='width=device-width,initial-scale=1.0')
+		block favicon
+		link(href="favicon.ico",rel="shortcut icon",type="image/x-icon")
+		block css
+		link(rel="stylesheet",href="css/bootstrap.css")
+		link(rel="stylesheet",href="vendor/toastr/toastr.min.css")
+		link(rel="stylesheet",href="css/site.css")
+	body(ng-app='app')
+		block navbar
+		
+		h1 Hello World
+		h1 layout.jade
+
+		block main-content
+
+
+		block footer
+			footer.container.text-center
+			p=menu.footer
+
+		block scripts
+		include scripts.jade

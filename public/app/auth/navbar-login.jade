@@ -1,0 +1,9 @@
+//- navbar-login.jade
+.navbar-right(ng-controller="NavbarAuthCtrl")
+	form.navbar-form(ng-hide='identity.isAuthenticated()')
+		.form-group
+			input.form-control(placeholder="email@address.com", ng-model="username")
+		.form-group
+			input.form-control(type='password', placeholder="password", ng-model="password")
+		button.btn.btn-primary(type=submit, ng-click="signin(username, password)") Sign In 
+			//- ng-click="signin(username, password)")Sign In

@@ -1,0 +1,35 @@
+//- index.jade
+extends ../includes/layout
+
+block baseurl
+	//- base(href="/")
+	//- this is needed to remove the [$location:nobase] http://errors.angularjs.org/1.4.5/$location/nobase error
+	//- https://docs.angularjs.org/error/$location/nobase 
+block navbar
+	.navbar.navbar-inverse.navbar-fixed-top
+		.container
+			.navbar-header
+				a.navbar-brand(href="")
+					h5=menu.appTitle
+					h6=menu.appTitleMessage
+			.navbar-collapse.collapse
+				ul.nav.navbar-nav
+					//- li
+						img(src="cc2.png")
+					li 
+						a(href="/")
+							h6=menu.home
+				div(ng-include="'/partials/auth/navbar-login'")
+
+					
+block main-content
+	section.content
+		h1 index.jade
+		div(ng-view)
+		//- h2=mongoMessage
+
+block footer
+	footer.container.text-center
+		p &copy; 
+		p=menu.footer
+		//- img(src="cc2.png")
