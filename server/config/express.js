@@ -46,6 +46,7 @@
 				// https://github.com/expressjs/session
 				app.use(passport.initialize());
 				app.use(passport.session());
+				
 		//----------Express ---------
 	}
 })();

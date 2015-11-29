@@ -52,7 +52,7 @@ var menu = new menuLanguage({
 var User = mongoose.model('User');
 
 passport.use(new LocalStrategy(function (username, password, done) {
-	User.findOne({userName: username}, function (err, user) {
+	User.findOne({username: username}, function (err, user) {
 		console.log('server err is %s\n server user is %s', err, user);
 
 		if (user) {
@@ -71,7 +71,7 @@ passport.serializeUser (function (user, done){
 	}
 });
 
-  passport.deserializeUser(function(id, done) {
+passport.deserializeUser(function(id, done) {
     User.findOne({_id:id}).exec(function(err, user) {
     console.log('passport.deserializeUser id is%s\npassport.deserializeUser user is%s\n', id, user);
       if(user) {
