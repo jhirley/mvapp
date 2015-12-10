@@ -14,7 +14,7 @@
 
 	var	app = express();
 
-	var config = require('./server/config/config')[env];
+	var config = require('./config')[env];
 
 	require('./server/config/express') (app, config);
 
