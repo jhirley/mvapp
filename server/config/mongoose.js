@@ -31,7 +31,7 @@
 */  //jf original joe eames code
 
 		User.find({}, function (err, collection) {
-			console.log ('The collection is '+collection);
+		//	console.log ('The collection is '+collection);
 			if(collection.length === 0) {
 				User.create({firstName:'Joe',lastName:'Eames',username:'joe'});
 				User.create({firstName:'John',lastName:'Papa',username:'john'});

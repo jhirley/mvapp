@@ -26,7 +26,7 @@
 
 //------------------------Mongoose code
 
-var menuLanguageSchema = mongoose.Schema({
+/*var menuLanguageSchema = mongoose.Schema({
 	home: String,
 	appTitle: String,
 	appTitleMessage: String,
@@ -35,16 +35,36 @@ var menuLanguageSchema = mongoose.Schema({
 	footer: String
 });
 var menuLanguage = mongoose.model('English', menuLanguageSchema);
-var menu = new menuLanguage({
-	appTitle:'Multi-vision',
-	appTitleMessage:'-Extreme tech training',
-	mainJumbotron:'Multi-vision',
-	mainJumbotronMessage:'lorem ip Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-	home:'Home',
-	footer: "2015 Multi-vision"  //jf &copy; 
-	
-	});
+*/
+var Menu = require('./server/models/menuModel');
 
+var menu = new Menu;
+Menu.find({}, function (err, collection) {
+	//console.log ('The collection is '+collection);
+	if(collection.length === 0) {
+		Menu.create({
+			language:'en'
+			,appTitle:'Multi-vision'
+			,appTitleMessage:'-Extreme tech training'
+			,mainJumbotron:'Multi-vision'
+			,mainJumbotronMessage:'lorem ip Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+			,home:'Home'
+			,footer: "2015 Multi-vision"  //jf &copy; 
+			
+		});	
+	}
+});
+Menu.findOne({language:'en'}, function (error, menu){
+	if (menu){
+//		console.log('found menu');
+//		menu = dbmenu; 
+	require('./server/config/routes') (app, menu);
+//		console.log(menu);
+//		return dbmenu;
+	}
+});
+
+//console.log(menu);
 
 //------------------------Mongoose code
 
@@ -87,7 +107,7 @@ passport.use(new LocalStrategy(function (username, password, done) {
 
 // //----------Routes-----------
 
-	require('./server/config/routes') (app, menu);
+
 
 
 //---------Define servers listen
