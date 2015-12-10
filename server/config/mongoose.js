@@ -4,7 +4,7 @@
 	var	mongoose = require('mongoose');
 	// var express	= require('express');
 	// var	stylus = require('stylus');
-var User = require('../models/userModel');  //jf pullin from ps-oauth
+	var User = require('../models/userModel');  //jf pullin from ps-oauth
 //------------------------Mongoose code
 
 
