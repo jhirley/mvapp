@@ -51,19 +51,6 @@ var menu = new menuLanguage({
 //-------------Passport code----------
 var User = mongoose.model('User');
 
-passport.use(new LocalStrategy(function (username, password, done) {
-	User.findOne({username: username}, function (err, user) {
-		console.log('server err is %s\n server user is %s', err, user);
-
-		if (user) {
-			return done(null, user);
-		} else {
-			return done(null, false);
-		}
-	});
-
-}));
-
 passport.serializeUser (function (user, done){
 	 console.log('passport.serializeUser (function (user is %s\n', user);
 	if(user){
@@ -80,7 +67,22 @@ passport.deserializeUser(function(id, done) {
         return done(null, false);
       }
     })
-  })
+  });
+
+passport.use(new LocalStrategy(function (username, password, done) {
+	User.findOne({username: username}, function (err, user) {
+		console.log('server err is %s\n server user is %s', err, user);
+
+		if (user) {
+			return done(null, user);
+		} else {
+			return done(null, false);
+		}
+	});
+
+}));
+
+
 //-------------Passport code----------
 
 // //----------Routes-----------
