@@ -4,7 +4,7 @@
 	var	mongoose = require('mongoose');
 	// var express	= require('express');
 	// var	stylus = require('stylus');
-
+var User = require('../models/userModel');  //jf pullin from ps-oauth
 //------------------------Mongoose code
 
 
@@ -20,13 +20,15 @@
 			console.log(config.mongodbName+' db opened...');
 		});
 
-		var userSchema = mongoose.Schema({
-			firstName : String,
-			lastName : String,
-			username : String
+	/*	var userSchema = mongoose.Schema({
+			firstName : String
+			,lastName : String
+			,username : String
 		});
 
+
 		var User = mongoose.model('User', userSchema);
+*/  //jf original joe eames code
 
 		User.find({}, function (err, collection) {
 			console.log ('The collection is '+collection);
