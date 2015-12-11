@@ -26,16 +26,6 @@
 
 //------------------------Mongoose code
 
-/*var menuLanguageSchema = mongoose.Schema({
-	home: String,
-	appTitle: String,
-	appTitleMessage: String,
-	mainJumbotron: String,
-	mainJumbotronMessage: String,
-	footer: String
-});
-var menuLanguage = mongoose.model('English', menuLanguageSchema);
-*/
 var Menu = require('./server/models/menuModel');
 
 var menu = new Menu;

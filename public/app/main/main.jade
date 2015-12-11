@@ -2,12 +2,10 @@
 
 .container
 	.jumbotron
-		h1 main.jade
+		//- h1 main.jade
 		//- h1{{ myVar }}
-		//- h1=menu.mainJumbotron
-		h1 Client Cooperation
-		//- p=menu.mainJumbotronMessage
-		p lorem ip Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+		h1=menu.mainJumbotron
+		p=menu.mainJumbotronMessage
 	.row
 		.col-md-6
 			div(ng-include="'/partials/main/featured'")
