@@ -9,7 +9,6 @@
     // var bodyParser = require('body-parser');
     var mongoose = require('mongoose');
     var passport = require('passport');
-    var LocalStrategy = require('passport-local').Strategy;
 
     var app = express();
 
@@ -53,36 +52,9 @@
     //-------------Passport code----------
     var User = mongoose.model('User');
 
-    passport.serializeUser (function (user, done) {
-        console.log('passport.serializeUser (function (user is %s\n', user);
-        if (user) {
-            done(null, user._id);
-        }
-    });
-
-    passport.deserializeUser(function(id, done) {
-        User.findOne({_id:id}).exec(function(err, user) {
-            console.log('passport.deserializeUser id is%s\npassport.deserializeUser user is%s\n', id, user);
-            if (user) {
-                return done(null, user);
-            } else {
-                return done(null, false);
-            }
-        });
-    });
-
-    passport.use(new LocalStrategy(function (username, password, done) {
-        User.findOne({username: username}, function (err, user) {
-            console.log('server err is %s\n server user is %s', err, user);
-
-            if (user) {
-                return done(null, user);
-            } else {
-                return done(null, false);
-            }
-        });
-    }));
-
+    //passport.js
+    require('./server/config/passport') (app, config);
+    
     //-------------Passport code----------
 
     // //----------Routes-----------
