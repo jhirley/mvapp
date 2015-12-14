@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 (function(){  //jf lets get out of the global scope
 
 	var express	= require('express');
@@ -14,7 +14,7 @@
 
 	//------ Stylus Compile-----
 			function compile (src,path) {
-				return stylus(src).set('filename',path); };
+				return stylus(src).set('filename',path); }
 		//------ Stylus Compile-----
 	
 	
@@ -48,5 +48,5 @@
 				app.use(passport.session());
 				
 		//----------Express ---------
-	}
+	};
 })();

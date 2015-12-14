@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 (function(){  //jf lets get out of the global scope
 
 	var	mongoose = require('mongoose');
@@ -6,8 +6,6 @@
 	// var	stylus = require('stylus');
 	var User = require('../models/userModel');  //jf pullin from ps-oauth
 //------------------------Mongoose code
-
-
 
 	module.exports = function(config){
 
@@ -20,16 +18,6 @@
 			console.log(config.mongodbName+' db opened...');
 		});
 
-	/*	var userSchema = mongoose.Schema({
-			firstName : String
-			,lastName : String
-			,username : String
-		});
-
-
-		var User = mongoose.model('User', userSchema);
-*/  //jf original joe eames code
-
 		User.find({}, function (err, collection) {
 		//	console.log ('The collection is '+collection);
 			if(collection.length === 0) {
@@ -38,7 +26,5 @@
 				User.create({firstName:'Dan',lastName:'Wahlin',username:'dan'});
 			}
 		});
-
-	}
-
+	};
 })();

@@ -1,11 +1,9 @@
-
-"use strict";
+'use strict';
 (function(){  //jf lets get out of the global scope
 var passport = require('passport');
 
 var express = require('express');
 var router = express.Router();
-
 
 var errors = require('./errors');  //jf added this as an error handler from mongo course
 
@@ -24,7 +22,6 @@ var errors = require('./errors');  //jf added this as an error handler from mong
 		});
 		
 		router.get('/partials/:directory/:file', function (req, res) {
-		// app.get('/partials/:directory/:file', function (req, res) {
 		  var file = req.params.file,
 		      directory = req.params.directory;
 	
@@ -33,21 +30,11 @@ var errors = require('./errors');  //jf added this as an error handler from mong
 		      console.log('file : '+file);
 		
 		  	res.render('../../public/app/' + req.params.directory + '/' + req.params.file,{
-	//jf			mongoMessage: mongoMessage,
 				menu: menu
 			});
 		});
-	
-	/*
-		app.get('/partials/*', function(req,res) {
-			var dumling = req.params;
-			console.log(dumling);
-			//console.log(req)
-			res.render('../../public/app/' + req.params);
-		});
-	*/
+
 		router.post('/login', function (req, res, next) {
-		// app.post('/login', function (req, res, next) {
 			passport.authenticate('local', function (err, user, info) {
 				console.log('routes app.post error is %s\nroutes app.post User is %s\n', err, user);
 				if(err) {return next(err);}
@@ -61,13 +48,9 @@ var errors = require('./errors');  //jf added this as an error handler from mong
 			})(req, res, next);
 		});
 
-			// auth(req, res, next);
-	//	});
-
 		router.get('*', function(req, res ){
-		// app.get('*', function(req, res ){
+
 			res.render('index',{
-	//jf			mongoMessage: mongoMessage,
 				menu: menu
 			});
 		});
@@ -75,6 +58,5 @@ var errors = require('./errors');  //jf added this as an error handler from mong
 app.use('/', router);
 
 		errors(app);  //jf check for errors
-	}
-
+	};
 })();

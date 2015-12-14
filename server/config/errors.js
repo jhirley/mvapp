@@ -17,12 +17,12 @@
       // default response type
       res.type('txt');
       res.send("Hmmm, couldn't find that page.");
-    })
+    });
 
      // 500
     app.use(function (err, req, res, next) {
       console.error('error at %s\n', req.url, err.stack);
-      res.status(500).send("Oops, we made a boo boo.");
-    })
-  }
+      res.status(500).send('Oops, we made a boo boo.');
+    });
+  };
 })();
