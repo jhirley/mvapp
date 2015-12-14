@@ -1,107 +1,94 @@
-"use strict";
-(function(){  //jf lets get out of the global scope
-	var env =	process.env.NODE_ENV	=	process.env.NODE_ENV||'development';	//jf let the system know we are in development mode
+'use strict';
+(function() {  //jf lets get out of the global scope
+    var env =   process.env.NODE_ENV    =   process.env.NODE_ENV || 'development';  //jf let the system know we are in development mode
 
-//standard module require statements
-	var express	= require('express');
+    //standard module require statements
+    var express = require('express');
 
-	// var logger = require('morgan');
-	// var bodyParser = require('body-parser');
-	var	mongoose = require('mongoose');
-	var passport = require('passport');
-	var LocalStrategy = require('passport-local').Strategy;
+    // var logger = require('morgan');
+    // var bodyParser = require('body-parser');
+    var mongoose = require('mongoose');
+    var passport = require('passport');
+    var LocalStrategy = require('passport-local').Strategy;
 
+    var app = express();
 
-	var	app = express();
+    var config = require('./config')[env];
 
-	var config = require('./config')[env];
+    require('./server/config/express') (app, config);
 
-	require('./server/config/express') (app, config);
+    require('./server/config/mongoose') (config);
 
-	require('./server/config/mongoose') (config);
+    //-------------------------------
 
-//-------------------------------
+    var server;
 
-	var server;
+    //------------------------Mongoose code
 
-//------------------------Mongoose code
+    var Menu = require('./server/models/menuModel');
 
-var Menu = require('./server/models/menuModel');
+    var menu = new Menu();
+    Menu.find({}, function (err, collection) {
+        //console.log ('The collection is '+collection);
+        if (collection.length === 0) {
+            Menu.create({
+                language:'en',
+                appTitle:'Multi-vision',
+                appTitleMessage:'-Extreme tech training',
+                mainJumbotron:'Multi-vision',
+                mainJumbotronMessage:'lorem ip Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                home:'Home',
+                footer: '2015 Multi-vision'  //jf &copy;
+            });
+        }
+    });
+    Menu.findOne({language: 'en'}, function (error, menu) {
+        if (menu) {
+            require('./server/config/routes') (app, menu);
+        }
+    });
 
-var menu = new Menu;
-Menu.find({}, function (err, collection) {
-	//console.log ('The collection is '+collection);
-	if(collection.length === 0) {
-		Menu.create({
-			language:'en'
-			,appTitle:'Multi-vision'
-			,appTitleMessage:'-Extreme tech training'
-			,mainJumbotron:'Multi-vision'
-			,mainJumbotronMessage:'lorem ip Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-			,home:'Home'
-			,footer: "2015 Multi-vision"  //jf &copy; 
-			
-		});	
-	}
-});
-Menu.findOne({language:'en'}, function (error, menu){
-	if (menu){
-//		console.log('found menu');
-//		menu = dbmenu; 
-	require('./server/config/routes') (app, menu);
-//		console.log(menu);
-//		return dbmenu;
-	}
-});
+    //------------------------Mongoose code
 
-//console.log(menu);
+    //-------------Passport code----------
+    var User = mongoose.model('User');
 
-//------------------------Mongoose code
+    passport.serializeUser (function (user, done) {
+        console.log('passport.serializeUser (function (user is %s\n', user);
+        if (user) {
+            done(null, user._id);
+        }
+    });
 
-//-------------Passport code----------
-var User = mongoose.model('User');
+    passport.deserializeUser(function(id, done) {
+        User.findOne({_id:id}).exec(function(err, user) {
+            console.log('passport.deserializeUser id is%s\npassport.deserializeUser user is%s\n', id, user);
+            if (user) {
+                return done(null, user);
+            } else {
+                return done(null, false);
+            }
+        });
+    });
 
-passport.serializeUser (function (user, done){
-	 console.log('passport.serializeUser (function (user is %s\n', user);
-	if(user){
-		done(null, user._id);
-	}
-});
+    passport.use(new LocalStrategy(function (username, password, done) {
+        User.findOne({username: username}, function (err, user) {
+            console.log('server err is %s\n server user is %s', err, user);
 
-passport.deserializeUser(function(id, done) {
-    User.findOne({_id:id}).exec(function(err, user) {
-    console.log('passport.deserializeUser id is%s\npassport.deserializeUser user is%s\n', id, user);
-      if(user) {
-        return done(null, user);
-      } else {
-        return done(null, false);
-      }
-    })
-  });
+            if (user) {
+                return done(null, user);
+            } else {
+                return done(null, false);
+            }
+        });
+    }));
 
-passport.use(new LocalStrategy(function (username, password, done) {
-	User.findOne({username: username}, function (err, user) {
-		console.log('server err is %s\n server user is %s', err, user);
+    //-------------Passport code----------
 
-		if (user) {
-			return done(null, user);
-		} else {
-			return done(null, false);
-		}
-	});
+    // //----------Routes-----------
 
-}));
-
-
-//-------------Passport code----------
-
-// //----------Routes-----------
-
-
-
-
-//---------Define servers listen
-	server =	app.listen(config.port);
-	console.log("server listening on port "+config.port+" on "+config.mongodbServer+"...");
+    //---------Define servers listen
+    server =    app.listen(config.port);
+    console.log('server listening on port ' + config.port + ' on ' + config.mongodbServer + '...');
 
 })();

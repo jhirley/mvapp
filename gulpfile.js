@@ -1,32 +1,60 @@
-'use strict';
-var gulp	=	require('gulp');
-var	mocha	=	require('gulp-mocha');
-var	gutil	=	require('gulp-util');
-var istanbul = 	require('gulp-istanbul');
+var gulp = require('gulp');
+var jshint = require('gulp-jshint');
+var jscs = require('gulp-jscs');
+var nodemon = require('gulp-nodemon');
 
+var jsFiles = ['*.js', 'src/**/*.js'];
 
-gulp.task('mocha', function(){
-	return gulp.src(['test/*.js'], {read:false})
-	.pipe(mocha({reporter:'list'}))
-	.on('error', gutil.log);
+gulp.task('style', function () {
+    gulp.src(jsFiles)
+        .pipe(jshint())
+        .pipe(jshint.reporter('jshint-stylish', {
+            verbose: true
+        }))
+        .pipe(jscs());
 });
 
-gulp.task('watch-mocha', function(){
-	gulp.run('mocha');
-	gulp.watch(['./**/*.js','test/**/*.js'], ['istanbul']);
-});
+gulp.task('inject', function () {
+    var wiredep = require('wiredep').stream;
+    var inject = require('gulp-inject');
 
-gulp.task('default',['watch-mocha']);
-
-gulp.task('istanbul', function (cb) {
-  gulp.src(['./*.js'])
-    .pipe(istanbul()) // Covering files
-    .pipe(istanbul.hookRequire()) // Force `require` to return covered files
-    .on('finish', function () {
-      gulp.src(['test/*.js'])
-        .pipe(mocha())
-        .pipe(istanbul.writeReports()) // Creating the reports after tests runned
-        .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } })) // Enforce a coverage of at least 90%
-        .on('end', cb);
+    var injectSrc = gulp.src(['./public/css/*.css',
+                             './public/js/*.js'], {
+        read: false
     });
+    var injectOptions = {
+        ignorePath: '/public'
+    };
+    var options = {
+        verbose: true,
+        bowerJson: require('./bower.json'),
+        directory: './public/lib',
+        ignorePath: '../../public'
+    };
+
+    return gulp.src('./src/views/*.ejs')
+        .pipe(wiredep(options))
+        .pipe(inject(injectSrc, injectOptions))
+        .pipe(gulp.dest('./src/views'));
+});
+
+gulp.task('nodemon', ['style', 'inject'], function () {
+    var options = {
+        script: 'server.js',
+        delayTime: 1,
+        env: {
+            'PORT': 3030,
+            'NODE_ENV': 'development'
+        },
+        watch: jsFiles
+    };
+    return nodemon(options)
+        .on('restart', ['style'], function (ev) {
+            console.log('Restarting .....');
+            console.log('File changed on restart:\n' + ev);
+        })
+        .on('start', function (ev) {console.log('Starting .....');})
+        .on('crash', function (ev) {console.log('CRASH  .....');})
+        .on('exit', function (ev) {console.log('Clean exit .....');})
+    ;
 });
